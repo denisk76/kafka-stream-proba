@@ -1,0 +1,1 @@
+docker exec -it broker kafka-console-producer --topic bms-transactions --broker-list broker:9092
