@@ -20,7 +20,7 @@ public class KafkaStreamProbaApplication {
     public static class MessageListener {
         @KafkaListener(topics = "bms-transactions", groupId = "join_driver_group")
         public void listenGroupBar(String message) {
-            System.out.println("Received Messasge in group 'bar': " + message);
+            System.out.println("Received Messasge in group 'join_driver_group': " + message);
         }
     }
 }

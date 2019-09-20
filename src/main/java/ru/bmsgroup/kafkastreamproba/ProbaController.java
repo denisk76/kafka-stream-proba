@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.state.KeyValueIterator;
-import org.apache.kafka.streams.state.QueryableStoreType;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.slf4j.Logger;
@@ -16,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bmsgroup.kafkastreamproba.model.*;
+import ru.bmsgroup.kafkastreamproba.model.BmsOperation;
+import ru.bmsgroup.kafkastreamproba.model.BmsPurchase;
+import ru.bmsgroup.kafkastreamproba.model.TerminalOperation;
+import ru.bmsgroup.kafkastreamproba.model.TerminalOperationType;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,55 +42,39 @@ public class ProbaController {
                 }
             };
         }
-        sendRecord(BmsTransaction.builder()
+        sendRecord(TerminalOperation.builder()
                 .clientId("1")
-                .purchaseId("PRCH-1")
-                .operationId("OPRN-1")
-                .operation(BmsOperationType.PAYMENT)
-                .actionId("A1")
-                .action(BmsActionType.NEW)
-                .amount(BigDecimal.ZERO)
-                .locked(BigDecimal.valueOf(12))
-                .calculation(BigDecimal.ZERO)
+                .parentRrn("RRN-1")
+                .currentRrn("RRN-1")
+                .operation(TerminalOperationType.PAYMENT)
+                .amount(BigDecimal.valueOf(24))
                 .build());
-        sendRecord(BmsTransaction.builder()
+        sendRecord(TerminalOperation.builder()
                 .clientId("1")
-                .purchaseId("PRCH-1")
-                .operationId("OPRN-1")
-                .operation(BmsOperationType.PAYMENT)
-                .actionId("A2")
-                .action(BmsActionType.CONFIRM)
+                .parentRrn("RRN-1")
+                .currentRrn("RRN-2")
+                .operation(TerminalOperationType.CONFIRM)
+                .amount(BigDecimal.valueOf(24))
+                .build());
+        sendRecord(TerminalOperation.builder()
+                .clientId("1")
+                .parentRrn("RRN-1")
+                .currentRrn("RRN-3")
+                .operation(TerminalOperationType.CASH)
                 .amount(BigDecimal.valueOf(12))
-                .locked(BigDecimal.valueOf(-12))
-                .calculation(BigDecimal.ZERO)
                 .build());
-        sendRecord(BmsTransaction.builder()
+        sendRecord(TerminalOperation.builder()
                 .clientId("1")
-                .purchaseId("PRCH-1")
-                .operationId("OPRN-2")
-                .operation(BmsOperationType.CASH)
-                .actionId("A2")
-                .action(BmsActionType.CONFIRM)
-                .amount(BigDecimal.valueOf(-2))
-                .locked(BigDecimal.valueOf(2))
-                .calculation(BigDecimal.ZERO)
-                .build());
-        sendRecord(BmsTransaction.builder()
-                .clientId("1")
-                .purchaseId("PRCH-1")
-                .operationId("OPRN-2")
-                .operation(BmsOperationType.CASH)
-                .actionId("A2")
-                .action(BmsActionType.CONFIRM)
-                .amount(BigDecimal.ZERO)
-                .locked(BigDecimal.valueOf(-2))
-                .calculation(BigDecimal.ZERO)
+                .parentRrn("RRN-3")
+                .currentRrn("RRN-4")
+                .operation(TerminalOperationType.CANCEL)
+                .amount(BigDecimal.valueOf(0))
                 .build());
         LOG.info("Test send");
         return "Hello, world";
     }
 
-    private void sendRecord(BmsTransaction transaction1) {
+    private void sendRecord(TerminalOperation transaction1) {
         Gson gson = new Gson();
 //        ProducerRecord<String, String> record = new ProducerRecord<>(TRANSACTIONS_STREAM_NAME, null, "{\"clientId\":\"1\",\"name\":\"Pushkin\"}");
         ProducerRecord<String, String> record = new ProducerRecord<>(TRANSACTIONS_STREAM_NAME, null, gson.toJson(transaction1));
