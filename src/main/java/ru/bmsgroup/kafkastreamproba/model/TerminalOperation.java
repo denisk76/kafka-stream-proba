@@ -33,14 +33,14 @@ public class TerminalOperation {
     }
 
     @Builder
-    public class TerminalOperationData {
+    public static class TerminalOperationData {
         public String clientId;
         public BigDecimal amount;
         public TerminalOperationType operation;
     }
 
     @Builder
-    public class Identity {
+    public static class Identity {
         public String clientId;
         public String parentRrn;
         public String currentRrn;

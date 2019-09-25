@@ -51,16 +51,17 @@ public class KafkaStreamsConfiguration {
         KeyValueMapper<String, BmsTransaction, String> purchaseIdAsKey = ((k, v) -> v.getPurchaseId());
         addStore(builder,OPERATIONS_STORE_NAME,operationSerde);
         addStore(builder,PURCHASES_STORE_NAME,purchaseSerde);
-
+        /* формируем actions из терминальных операций*/
         KStream<String, BmsTransaction> stream = builder.stream(TRANSACTIONS_STREAM_NAME, Consumed.with(stringSerde, TerminalOperationSerde))
                 .transform(()-> new TerminalOperationTransformer(OPERATIONS_STORE_NAME, PURCHASES_STORE_NAME),OPERATIONS_STORE_NAME, PURCHASES_STORE_NAME)
                 .transform(() -> new TerminalOperationTransformerToBms())
                 .selectKey(clientIdAsKey);
         stream.print(Printed.<String, BmsTransaction>toSysOut().withLabel("transactions"));
-
+        /* из actions формируем операции*/
         KStream<String, BmsTransaction> operationsStream = stream.selectKey(operationIdAsKey)
                 .transformValues(() -> new BmsOperationTransformer(OPERATIONS_STORE_NAME), OPERATIONS_STORE_NAME);
         operationsStream.print(Printed.<String, BmsTransaction>toSysOut().withLabel("operations"));
+        /* из actions формируем покупки*/
         KStream<String, BmsTransaction> purchaseStream = stream.selectKey(purchaseIdAsKey)
                 .transformValues(() -> new BmsPurchaseTransformer(PURCHASES_STORE_NAME), PURCHASES_STORE_NAME);
         return purchaseStream;

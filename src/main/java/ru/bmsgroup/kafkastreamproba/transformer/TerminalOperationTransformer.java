@@ -60,6 +60,7 @@ public class TerminalOperationTransformer implements Transformer<String, Termina
     @Override
     public KeyValue<String, TransformedOperation> transform(String key, TerminalOperation terminalOperation) {
         BmaStrategy bmaStrategy = bmsStrategyFactory.get(terminalOperation.getOperation());
+        LOG.info("bms strategy by " + terminalOperation.getOperation() + " is " + bmaStrategy.getClass().getName());
         bmaStrategy.get(terminalOperation.getIdentity()).forEach(t -> context.forward(key,
                 t.data(terminalOperation.getTerminalOperationData()).build())
         );

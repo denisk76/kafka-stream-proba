@@ -62,14 +62,14 @@ public class BmsTransaction {
     }
 
     @Builder
-    public class Money {
+    public static class Money {
         public BigDecimal amount;
         public BigDecimal locked;
         public BigDecimal calculation;
     }
 
     @Builder
-    public class Identity {
+    public static class Identity {
         public String purchaseId;
         public String operationId;
         public String actionId;
