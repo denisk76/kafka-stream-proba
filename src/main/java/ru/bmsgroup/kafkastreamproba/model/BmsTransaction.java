@@ -1,5 +1,6 @@
 package ru.bmsgroup.kafkastreamproba.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class BmsTransaction {
     private BigDecimal locked;
     private BigDecimal calculation;
 
+    @JsonIgnore
     public Money getMoney() {
         return Money.builder()
                 .amount(BmsTransaction.this.amount)
@@ -29,6 +31,7 @@ public class BmsTransaction {
                 .build();
     }
 
+    @JsonIgnore
     public Identity getIdentity() {
         return Identity.builder()
                 .purchaseId(BmsTransaction.this.purchaseId)
@@ -45,11 +48,13 @@ public class BmsTransaction {
         private BigDecimal amount;
         private BigDecimal locked;
         private BigDecimal calculation;
+        private BmsOperationType operation;
 
         public BmsTransactionBuilder identity(Identity identity) {
             this.purchaseId = identity.purchaseId;
             this.operationId = identity.operationId;
             this.actionId = identity.actionId;
+            this.operation = identity.operation;
             return this;
         }
 
@@ -59,19 +64,5 @@ public class BmsTransaction {
             this.locked = money.locked;
             return this;
         }
-    }
-
-    @Builder
-    public static class Money {
-        public BigDecimal amount;
-        public BigDecimal locked;
-        public BigDecimal calculation;
-    }
-
-    @Builder
-    public static class Identity {
-        public String purchaseId;
-        public String operationId;
-        public String actionId;
     }
 }

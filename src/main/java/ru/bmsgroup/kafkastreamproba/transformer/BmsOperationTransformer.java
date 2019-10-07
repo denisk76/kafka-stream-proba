@@ -5,9 +5,10 @@ import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.bmsgroup.kafkastreamproba.model.*;
+import org.springframework.util.Assert;
+import ru.bmsgroup.kafkastreamproba.model.BmsOperation;
+import ru.bmsgroup.kafkastreamproba.model.BmsTransaction;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public class BmsOperationTransformer implements ValueTransformer<BmsTransaction, BmsTransaction> {
@@ -25,11 +26,14 @@ public class BmsOperationTransformer implements ValueTransformer<BmsTransaction,
     public void init(ProcessorContext processorContext) {
         this.context = processorContext;
         operationStore = (KeyValueStore) this.context.getStateStore(operationStoreName);
+        Objects.requireNonNull(operationStore, "Operation Store can't be null");
+        LOG.info("Operation Store Found SUCCESS");
     }
 
     @Override
     public BmsTransaction transform(BmsTransaction bmsTransaction) {
         LOG.info("operation id = "+bmsTransaction.getOperationId());
+        Assert.notNull(bmsTransaction.getOperationId(), "operation id can't be null");
         BmsOperation bmsOperation = operationStore.get(bmsTransaction.getOperationId());
         if(bmsOperation == null) {
             LOG.info("operation is null");

@@ -1,10 +1,10 @@
 package ru.bmsgroup.kafkastreamproba.strategy;
 
-import ru.bmsgroup.kafkastreamproba.model.TerminalOperation;
-import ru.bmsgroup.kafkastreamproba.model.TransformedOperation;
+import ru.bmsgroup.kafkastreamproba.model.terminal.TerminalOperation;
+import ru.bmsgroup.kafkastreamproba.model.terminal.TransformedOperation;
 
 import java.util.List;
 
-public interface BmaStrategy {
+public interface BmsStrategy {
     List<TransformedOperation.TransformedOperationBuilder> get(TerminalOperation.Identity operation);
 }

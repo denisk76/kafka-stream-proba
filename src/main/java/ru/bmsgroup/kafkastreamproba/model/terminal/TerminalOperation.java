@@ -1,4 +1,4 @@
-package ru.bmsgroup.kafkastreamproba.model;
+package ru.bmsgroup.kafkastreamproba.model.terminal;
 
 import lombok.*;
 

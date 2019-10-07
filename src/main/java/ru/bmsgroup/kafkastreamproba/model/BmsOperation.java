@@ -49,7 +49,7 @@ public class BmsOperation {
                 .operationId(o1.getOperationId())
                 .purchaseId(o1.purchaseId)
                 .operation(o1.getOperation())
-                .state(o2.getState())
+                .state(o1.getState())
                 .amount(o1.getAmount().add(o2.getAmount()))
                 .locked(o1.getLocked().add(o2.getLocked()))
                 .calculation(o1.getCalculation().add(o2.getCalculation()))

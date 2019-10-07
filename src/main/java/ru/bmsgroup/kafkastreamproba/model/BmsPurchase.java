@@ -56,7 +56,7 @@ public class BmsPurchase {
         return BmsPurchase.builder()
                 .operations(operations)
                 .purchaseId(o1.getPurchaseId())
-                .state(o2.getState())
+                .state(o1.getState())
                 .amount(o1.getAmount().add(o2.getAmount()))
                 .locked(o1.getLocked().add(o2.getLocked()))
                 .calculation(o1.getCalculation().add(o2.getCalculation()))

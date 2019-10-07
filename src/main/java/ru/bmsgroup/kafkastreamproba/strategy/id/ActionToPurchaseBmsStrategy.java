@@ -1,18 +1,23 @@
 package ru.bmsgroup.kafkastreamproba.strategy.id;
 
-import ru.bmsgroup.kafkastreamproba.model.*;
+import ru.bmsgroup.kafkastreamproba.model.BmsOperation;
+import ru.bmsgroup.kafkastreamproba.model.BmsPurchase;
+import ru.bmsgroup.kafkastreamproba.model.BmsSimpleOperation;
+import ru.bmsgroup.kafkastreamproba.model.Identity;
+import ru.bmsgroup.kafkastreamproba.model.terminal.TerminalOperation;
+import ru.bmsgroup.kafkastreamproba.model.terminal.TransformedOperation;
 import ru.bmsgroup.kafkastreamproba.operations.OperationFinder;
 import ru.bmsgroup.kafkastreamproba.operations.PurchaseFinder;
-import ru.bmsgroup.kafkastreamproba.strategy.BmaStrategy;
+import ru.bmsgroup.kafkastreamproba.strategy.BmsStrategy;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ActionToPurchaseBmaStrategy implements BmaStrategy {
+public class ActionToPurchaseBmsStrategy implements BmsStrategy {
     private PurchaseFinder purchaseFinder;
     private OperationFinder operationFinder;
 
-    public ActionToPurchaseBmaStrategy(PurchaseFinder purchaseFinder, OperationFinder operationFinder) {
+    public ActionToPurchaseBmsStrategy(PurchaseFinder purchaseFinder, OperationFinder operationFinder) {
         this.purchaseFinder = purchaseFinder;
         this.operationFinder = operationFinder;
     }
@@ -28,10 +33,11 @@ public class ActionToPurchaseBmaStrategy implements BmaStrategy {
     private TransformedOperation.TransformedOperationBuilder transformOperation(TerminalOperation.Identity terminalOperation, BmsSimpleOperation bmsOperation) {
         BmsOperation operation = operationFinder.get(bmsOperation.getOperationId());
         return TransformedOperation.builder()
-                .identity(BmsTransaction.Identity.builder()
+                .identity(Identity.builder()
                         .purchaseId(terminalOperation.parentRrn)
                         .operationId(bmsOperation.getOperationId())
                         .actionId(terminalOperation.currentRrn)
+                        .operation(bmsOperation.getOperation())
                         .build())
                 .bmsOperation(operation);
     }

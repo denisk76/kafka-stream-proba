@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bmsgroup.kafkastreamproba.model.BmsOperation;
 import ru.bmsgroup.kafkastreamproba.model.BmsPurchase;
-import ru.bmsgroup.kafkastreamproba.model.TerminalOperation;
-import ru.bmsgroup.kafkastreamproba.model.TerminalOperationType;
+import ru.bmsgroup.kafkastreamproba.model.terminal.TerminalOperation;
+import ru.bmsgroup.kafkastreamproba.model.terminal.TerminalOperationType;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class ProbaController {
                 .build());
         sendRecord(TerminalOperation.builder()
                 .clientId("1")
-                .parentRrn("RRN-3")
+                .parentRrn("RRN-1")
                 .currentRrn("RRN-4")
                 .operation(TerminalOperationType.CANCEL)
                 .amount(BigDecimal.valueOf(0))

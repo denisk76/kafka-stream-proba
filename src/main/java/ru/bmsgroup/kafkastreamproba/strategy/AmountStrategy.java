@@ -1,8 +1,8 @@
 package ru.bmsgroup.kafkastreamproba.strategy;
 
-import ru.bmsgroup.kafkastreamproba.model.BmsTransaction;
-import ru.bmsgroup.kafkastreamproba.model.TransformedOperation;
+import ru.bmsgroup.kafkastreamproba.model.Money;
+import ru.bmsgroup.kafkastreamproba.model.terminal.TransformedOperation;
 
 public interface AmountStrategy {
-    BmsTransaction.Money get(TransformedOperation operation);
+    Money get(TransformedOperation operation);
 }

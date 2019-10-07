@@ -16,10 +16,10 @@
 ## Send payments to topic
 `./send.sh`
 ```
-{"clientId":"1","purchaseId":"RRN-1","operationId":"RRN-1","operation":"PAYMENT","amount":"24"}
-{"clientId":"1","purchaseId":"RRN-1","operationId":"RRN-2","operation":"CONFIRM","amount":"24"}
-{"clientId":"1","purchaseId":"RRN-1","operationId":"RRN-3","operation":"CASH","amount":"12"}
-{"clientId":"1","purchaseId":"RRN-3","operationId":"RRN-4","operation":"CANCEL","amount":"0"}
+{"clientId":"1","parentRrn":"RRN-1","currentRrn":"RRN-1","operation":"PAYMENT","amount":"24"}
+{"clientId":"1","parentRrn":"RRN-1","currentRrn":"RRN-2","operation":"CONFIRM","amount":"24"}
+{"clientId":"1","parentRrn":"RRN-1","currentRrn":"RRN-3","operation":"CASH","amount":"12"}
+{"clientId":"1","parentRrn":"RRN-1","currentRrn":"RRN-4","operation":"CANCEL","amount":"0"}
 ```
 ## Show topics
 ```
