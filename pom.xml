@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>12</java.version>
-        <kafka-streams.version>2.3.0</kafka-streams.version>
+        <kafka-streams.version>2.6.3</kafka-streams.version>
     </properties>
 
     <dependencies>
